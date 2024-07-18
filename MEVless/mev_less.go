@@ -10,38 +10,40 @@ import (
 
 type MEVless struct {
 	*tripod.Tripod
-	cfg       *Config
-	orderTxns types.SignedTxns
+	cfg *Config
+
+	orderCommitments chan *OrderCommitment
 }
 
 const Prefix = "MEVless_"
 
 func NewMEVless(cfg *Config) *MEVless {
 	tri := &MEVless{
-		Tripod:    tripod.NewTripod(),
-		cfg:       cfg,
-		orderTxns: make([]*types.SignedTxn, 0),
+		Tripod:           tripod.NewTripod(),
+		cfg:              cfg,
+		orderCommitments: make(chan *OrderCommitment),
 	}
+	go tri.HandleSubscribe()
 	return tri
 }
 
-func (m *MEVless) Pack(numLimit uint64) ([]*types.SignedTxn, error) {
-	err := m.OrderCommitment()
+func (m *MEVless) Pack(blockNum common.BlockNum, numLimit uint64) ([]*types.SignedTxn, error) {
+	err := m.OrderCommitment(blockNum)
 	if err != nil {
 		return nil, err
 	}
 	return m.Pool.Pack(numLimit)
 }
 
-func (m *MEVless) PackFor(numLimit uint64, filter func(*types.SignedTxn) bool) ([]*types.SignedTxn, error) {
-	err := m.OrderCommitment()
+func (m *MEVless) PackFor(blockNum common.BlockNum, numLimit uint64, filter func(*types.SignedTxn) bool) ([]*types.SignedTxn, error) {
+	err := m.OrderCommitment(blockNum)
 	if err != nil {
 		return nil, err
 	}
 	return m.Pool.PackFor(numLimit, filter)
 }
 
-func (m *MEVless) OrderCommitment() error {
+func (m *MEVless) OrderCommitment(blockNum common.BlockNum) error {
 	txns, err := m.Pool.PackFor(m.cfg.PackNumber, func(txn *types.SignedTxn) bool {
 		if txn.ParamsIsJson() {
 			return false
@@ -58,9 +60,15 @@ func (m *MEVless) OrderCommitment() error {
 		return err
 	}
 
-	m.Pool.SetOrder(m.sortTxns(txns))
+	sequence := m.sortTxns(txns)
 
-	// TODO: send event to client to let them know the tx order commitment
+	m.Pool.SetOrder(sequence)
+
+	// send event to client to let them know the tx order commitment
+	m.orderCommitments <- &OrderCommitment{
+		BlockNumber: blockNum,
+		Sequence:    sequence,
+	}
 
 	// TODO: sync the order commitment to other P2P nodes
 
@@ -85,6 +93,6 @@ func (m *MEVless) VerifyBlock(block *types.Block) error {
 }
 
 type OrderCommitment struct {
-	BlockNumber uint64              `json:"block_number"`
+	BlockNumber common.BlockNum     `json:"block_number"`
 	Sequence    map[int]common.Hash `json:"sequence"`
 }
