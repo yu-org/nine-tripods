@@ -12,3 +12,7 @@ github.com/yu-org/yu v0.0.0-20240715155159-486cedc8c614 h1:RdqH2jMOCDQiBwjMnLQML
 github.com/yu-org/yu v0.0.0-20240715155159-486cedc8c614/go.mod h1:MebubG2I3xLVRp9dMQNIUh5uS/nh1LSNw4p6INCu//8=
 github.com/yu-org/yu v0.0.0-20240715160822-530a43043eaa h1:JSwBQlGd1T5zqfCIbm6IbftIVSplwnKfHd5RtIuKS7Q=
 github.com/yu-org/yu v0.0.0-20240715160822-530a43043eaa/go.mod h1:MebubG2I3xLVRp9dMQNIUh5uS/nh1LSNw4p6INCu//8=
+github.com/yu-org/yu v0.0.0-20240718133138-87ccc459fc6c h1:vIhTtD0Ok0kCqnY5mrV+7/4ZDOPpoxBLxsz9fja+oC8=
+github.com/yu-org/yu v0.0.0-20240718133138-87ccc459fc6c/go.mod h1:MebubG2I3xLVRp9dMQNIUh5uS/nh1LSNw4p6INCu//8=
+github.com/yu-org/yu v0.0.0-20240718134717-710073eed151 h1:dM01uFiFoCMJG0FB849UOEA+wOJs7rvvqbFZaGghZeQ=
+github.com/yu-org/yu v0.0.0-20240718134717-710073eed151/go.mod h1:MebubG2I3xLVRp9dMQNIUh5uS/nh1LSNw4p6INCu//8=
