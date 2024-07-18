@@ -6,6 +6,7 @@ import (
 	"github.com/yu-org/yu/core/types"
 	"sort"
 	"strings"
+	"time"
 )
 
 type MEVless struct {
@@ -69,6 +70,7 @@ func (m *MEVless) OrderCommitment(blockNum common.BlockNum) error {
 		BlockNumber: blockNum,
 		Sequence:    sequence,
 	}
+	time.Sleep(800 * time.Millisecond)
 
 	// TODO: sync the order commitment to other P2P nodes
 
