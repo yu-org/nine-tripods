@@ -36,5 +36,5 @@ func (m *MEVless) SubscribeOrderCommitment(w http.ResponseWriter, r *http.Reques
 
 func (m *MEVless) HandleSubscribe() {
 	http.HandleFunc("/mev_less", m.SubscribeOrderCommitment)
-	http.ListenAndServe(m.cfg.Port, nil)
+	http.ListenAndServe(m.cfg.Addr, nil)
 }

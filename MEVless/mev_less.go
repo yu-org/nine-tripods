@@ -96,6 +96,10 @@ func (m *MEVless) VerifyBlock(block *types.Block) error {
 	return nil
 }
 
+func (m *MEVless) AdvanceCharge() uint64 {
+	return m.cfg.AdvanceCharge
+}
+
 type OrderCommitment struct {
 	BlockNumber common.BlockNum     `json:"block_number"`
 	Sequence    map[int]common.Hash `json:"sequence"`
