@@ -128,8 +128,8 @@ func (m *MEVless) VerifyBlock(block *types.Block) error {
 	return nil
 }
 
-func (m *MEVless) AdvanceCharge() uint64 {
-	return m.cfg.AdvanceCharge
+func (m *MEVless) Charge() uint64 {
+	return m.cfg.Charge
 }
 
 type OrderCommitment struct {
