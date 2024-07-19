@@ -35,7 +35,9 @@ func (m *MEVless) Pack(blockNum common.BlockNum, numLimit uint64) ([]*types.Sign
 	if err != nil {
 		return nil, err
 	}
-	return m.Pool.Pack(numLimit)
+	return m.Pool.PackFor(numLimit, func(txn *types.SignedTxn) bool {
+		return txn.ParamsIsJson()
+	})
 }
 
 func (m *MEVless) PackFor(blockNum common.BlockNum, numLimit uint64, filter func(*types.SignedTxn) bool) ([]*types.SignedTxn, error) {
@@ -43,7 +45,12 @@ func (m *MEVless) PackFor(blockNum common.BlockNum, numLimit uint64, filter func
 	if err != nil {
 		return nil, err
 	}
-	return m.Pool.PackFor(numLimit, filter)
+	return m.Pool.PackFor(numLimit, func(txn *types.SignedTxn) bool {
+		if txn.ParamsIsJson() {
+			return filter(txn)
+		}
+		return false
+	})
 }
 
 func (m *MEVless) OrderCommitment(blockNum common.BlockNum) error {
