@@ -9,11 +9,17 @@ on:
     paths:
       - 'MEVless/**'
       - 'poa/**'
+    paths-ignore:
+      - '**/docs/**'
+      - '**/README.md'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'MEVless/**'
       - 'poa/**'
+    paths-ignore:
+      - '**/docs/**'
+      - '**/README.md'
 
 defaults:
   run:
