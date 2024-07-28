@@ -20,7 +20,7 @@ import (
 type Poa struct {
 	*Tripod
 
-	MevLess *MEVless.MEVless `tripod:"mevless"`
+	MevLess *MEVless.MEVless `tripod:"mevless,omitempty"`
 
 	// key: crypto address, generate from pubkey
 	validatorsMap map[Address]peer.ID
