@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-func TestPoaSingleNode(t *testing.T) {
+func TestPoa(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 
