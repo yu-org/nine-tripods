@@ -2,7 +2,6 @@ package tests_test
 
 import (
 	"github.com/stretchr/testify/assert"
-	"github.com/yu-org/nine-tripods/MEVless"
 
 	"github.com/yu-org/yu/apps/asset"
 	"github.com/yu-org/yu/core/keypair"
@@ -11,6 +10,7 @@ import (
 	cliAsset "github.com/yu-org/yu/example/client/asset"
 	"github.com/yu-org/yu/example/client/callchain"
 
+	"github.com/yu-org/nine-tripods/MEVless"
 	"github.com/yu-org/nine-tripods/poa"
 
 	"os"
@@ -56,17 +56,17 @@ func runChain(wg *sync.WaitGroup) {
 func transferAsset(t *testing.T) {
 	pubkey, privkey, err := keypair.GenKeyPair(keypair.Sr25519)
 	if err != nil {
-		panic("generate key error: " + err.Error())
+		t.Fatal("generate key error: " + err.Error())
 	}
 
 	toPubkey, _, err := keypair.GenKeyPair(keypair.Sr25519)
 	if err != nil {
-		panic("generate To Address key error: " + err.Error())
+		t.Fatal("generate To Address key error: " + err.Error())
 	}
 
 	sub, err := callchain.NewSubscriber()
 	if err != nil {
-		panic("new subscriber failed: " + err.Error())
+		t.Fatal("new subscriber failed: " + err.Error())
 	}
 
 	resultCh := make(chan *types.Receipt)

@@ -72,8 +72,6 @@ func (m *MEVless) OrderCommitment(blockNum common.BlockNum) error {
 
 	sequence := m.makeOrder(hashTxns)
 
-	// m.Pool.SetOrder(sequence)
-
 	// send event to client to let them know the tx order commitment
 	m.orderCommitments <- &OrderCommitment{
 		BlockNumber: blockNum,
@@ -125,6 +123,7 @@ func (m *MEVless) makeOrder(hashTxns []*types.SignedTxn) map[int]common.Hash {
 
 func (m *MEVless) VerifyBlock(block *types.Block) error {
 	// TODO: verify tx order commitment from other miner node
+	// TODO: for double-check, fetch txs from DA layers if the block does not have commitment txs.
 	return nil
 }
 

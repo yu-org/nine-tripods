@@ -50,17 +50,17 @@ func runChain(wg *sync.WaitGroup) {
 func transferAsset(t *testing.T) {
 	pubkey, privkey, err := keypair.GenKeyPair(keypair.Sr25519)
 	if err != nil {
-		panic("generate key error: " + err.Error())
+		t.Fatal("generate key error: " + err.Error())
 	}
 
 	toPubkey, _, err := keypair.GenKeyPair(keypair.Sr25519)
 	if err != nil {
-		panic("generate To Address key error: " + err.Error())
+		t.Fatal("generate To Address key error: " + err.Error())
 	}
 
 	sub, err := callchain.NewSubscriber()
 	if err != nil {
-		panic("new subscriber failed: " + err.Error())
+		t.Fatal("new subscriber failed: " + err.Error())
 	}
 
 	resultCh := make(chan *types.Receipt)
