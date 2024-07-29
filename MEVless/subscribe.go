@@ -1,9 +1,9 @@
 package MEVless
 
 import (
-	"encoding/json"
 	"github.com/gorilla/websocket"
 	"github.com/sirupsen/logrus"
+	"github.com/yu-org/yu/common"
 	"net/http"
 )
 
@@ -16,21 +16,21 @@ func (m *MEVless) SubscribeOrderCommitment(w http.ResponseWriter, r *http.Reques
 		return
 	}
 	defer c.Close()
-	for {
-		select {
-		case oc := <-m.orderCommitments:
-			byt, err := json.Marshal(oc)
-			if err != nil {
-				logrus.Error("SubscribeOrderCommitment json.Marshal: ", err)
-				break
-			}
-			err = c.WriteMessage(websocket.TextMessage, byt)
-			if err != nil {
-				logrus.Error("SubscribeOrderCommitment write:", err)
-				break
-			}
-		}
-
+	_, msg, err := c.ReadMessage()
+	if err != nil {
+		logrus.Error("SubscribeOrderCommitment ReadMessage failed: ", err)
+		return
+	}
+	txnHash := common.BytesToHash(msg)
+	txOrderByt, _, err := m.commitmentsDB.Get(txnHash.Bytes())
+	if err != nil {
+		logrus.Errorf("SubscribeOrderCommitment Get txOrder(%s) failed: %s", txnHash.String(), err)
+		return
+	}
+	err = c.WriteMessage(websocket.TextMessage, txOrderByt)
+	if err != nil {
+		logrus.Error("SubscribeOrderCommitment WriteMessage failed: ", err)
+		return
 	}
 }
 

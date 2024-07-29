@@ -1,6 +1,9 @@
 package MEVless
 
 import (
+	"encoding/json"
+	"fmt"
+	"github.com/cockroachdb/pebble"
 	"github.com/sirupsen/logrus"
 	"github.com/yu-org/yu/common"
 	"github.com/yu-org/yu/core/tripod"
@@ -15,19 +18,30 @@ type MEVless struct {
 	*tripod.Tripod
 	cfg *Config
 
-	orderCommitments chan *OrderCommitment
+	commitmentsDB *pebble.DB
+
+	//orderCommitments chan *OrderCommitment
+	//wsCh             chan *OrderCommitment
+	//p2pCh            chan *OrderCommitment
 }
 
 const Prefix = "MEVless_"
 
-func NewMEVless(cfg *Config) *MEVless {
+func NewMEVless(cfg *Config) (*MEVless, error) {
+	db, err := pebble.Open(cfg.DbPath, &pebble.Options{})
+	if err != nil {
+		return nil, err
+	}
 	tri := &MEVless{
-		Tripod:           tripod.NewTripod(),
-		cfg:              cfg,
-		orderCommitments: make(chan *OrderCommitment),
+		Tripod:        tripod.NewTripod(),
+		cfg:           cfg,
+		commitmentsDB: db,
+		//orderCommitments: make(chan *OrderCommitment, 20),
+		//wsCh:             make(chan *OrderCommitment, 10),
+		//p2pCh:            make(chan *OrderCommitment, 10),
 	}
 	go tri.HandleSubscribe()
-	return tri
+	return tri, nil
 }
 
 func (m *MEVless) Pack(blockNum common.BlockNum, numLimit uint64) ([]*types.SignedTxn, error) {
@@ -72,18 +86,24 @@ func (m *MEVless) OrderCommitment(blockNum common.BlockNum) error {
 
 	sequence := m.makeOrder(hashTxns)
 
-	// send event to client to let them know the tx order commitment
-	m.orderCommitments <- &OrderCommitment{
+	orderCommitment := &OrderCommitment{
 		BlockNumber: blockNum,
-		Sequence:    sequence,
+		Sequences:   sequence,
 	}
 
-	// TODO: sync the order commitment to other P2P nodes
+	err = m.storeOrderCommitment(orderCommitment)
+	if err != nil {
+		return err
+	}
+
+	// TODO: sync the OrderCommitment to other P2P nodes
 
 	// sleep for a while so that clients can send their tx-content onchain.
 	time.Sleep(800 * time.Millisecond)
 
 	m.Pool.Reset(hashTxns)
+
+	fmt.Println("--------start to sort txns by order commitment...")
 
 	m.Pool.SortTxns(func(txs []*types.SignedTxn) []*types.SignedTxn {
 		sorted := make([]*types.SignedTxn, len(sequence))
@@ -133,5 +153,29 @@ func (m *MEVless) Charge() uint64 {
 
 type OrderCommitment struct {
 	BlockNumber common.BlockNum     `json:"block_number"`
-	Sequence    map[int]common.Hash `json:"sequence"`
+	Sequences   map[int]common.Hash `json:"sequences"`
+}
+
+type TxOrder struct {
+	BlockNumber common.BlockNum `json:"block_number"`
+	Sequence    int             `json:"sequence"`
+}
+
+func (m *MEVless) storeOrderCommitment(oc *OrderCommitment) error {
+	batch := m.commitmentsDB.NewBatch()
+	for seq, txnHash := range oc.Sequences {
+		txOrder := &TxOrder{
+			BlockNumber: oc.BlockNumber,
+			Sequence:    seq,
+		}
+		byt, err := json.Marshal(txOrder)
+		if err != nil {
+			return err
+		}
+		err = batch.Set(txnHash.Bytes(), byt, pebble.NoSync)
+		if err != nil {
+			return err
+		}
+	}
+	return batch.Commit(pebble.Sync)
 }
