@@ -2,8 +2,8 @@ package MEVless
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/cockroachdb/pebble"
+	"github.com/davecgh/go-spew/spew"
 	"github.com/sirupsen/logrus"
 	"github.com/yu-org/yu/common"
 	"github.com/yu-org/yu/core/tripod"
@@ -83,6 +83,9 @@ func (m *MEVless) OrderCommitment(blockNum common.BlockNum) error {
 	if err != nil {
 		return err
 	}
+	if len(hashTxns) == 0 {
+		return nil
+	}
 
 	sequence := m.makeOrder(hashTxns)
 
@@ -102,8 +105,6 @@ func (m *MEVless) OrderCommitment(blockNum common.BlockNum) error {
 	time.Sleep(800 * time.Millisecond)
 
 	m.Pool.Reset(hashTxns)
-
-	fmt.Println("--------start to sort txns by order commitment...")
 
 	m.Pool.SortTxns(func(txs []*types.SignedTxn) []*types.SignedTxn {
 		sorted := make([]*types.SignedTxn, len(sequence))
@@ -135,6 +136,7 @@ func (m *MEVless) makeOrder(hashTxns []*types.SignedTxn) map[int]common.Hash {
 		return hashTxns[i].GetTips() > hashTxns[j].GetTips()
 	})
 	for i, txn := range hashTxns {
+		spew.Dump(txn)
 		hashStr := strings.TrimPrefix(txn.GetParams(), Prefix)
 		order[i] = common.BytesToHash([]byte(hashStr))
 	}
