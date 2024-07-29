@@ -33,17 +33,18 @@ func runChain(t *testing.T, wg *sync.WaitGroup) {
 
 	poaCfg := poa.DefaultCfg(0)
 	mevLessCfg := MEVless.DefaultCfg()
-	startup.InitDefaultKernelConfig()
+	yuCfg := startup.InitDefaultKernelConfig()
+	yuCfg.MaxBlockNum = 10
 
 	// reset the history data
-	os.RemoveAll(startup.KernelCfg.DataDir)
+	os.RemoveAll(yuCfg.DataDir)
 
 	assetTri := asset.NewAsset("yu-coin")
 	poaTri := poa.NewPoa(poaCfg)
 	mevLessTri, err := MEVless.NewMEVless(mevLessCfg)
 	assert.NoError(t, err)
 
-	chain := startup.InitDefaultKernel(poaTri, assetTri, mevLessTri)
+	chain := startup.InitDefaultKernel(yuCfg, poaTri, assetTri, mevLessTri)
 	go chain.Startup()
 
 	blockInterval := time.Duration(poaCfg.BlockInterval) * time.Second
