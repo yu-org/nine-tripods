@@ -14,15 +14,15 @@ import (
 	"time"
 )
 
+const notifyBufferLen = 10
+
 type MEVless struct {
 	*tripod.Tripod
 	cfg *Config
 
 	commitmentsDB *pebble.DB
 
-	//orderCommitments chan *OrderCommitment
-	//wsCh             chan *OrderCommitment
-	//p2pCh            chan *OrderCommitment
+	notifyCh chan *OrderCommitment
 }
 
 const Prefix = "MEVless_"
@@ -36,9 +36,7 @@ func NewMEVless(cfg *Config) (*MEVless, error) {
 		Tripod:        tripod.NewTripod(),
 		cfg:           cfg,
 		commitmentsDB: db,
-		//orderCommitments: make(chan *OrderCommitment, 20),
-		//wsCh:             make(chan *OrderCommitment, 10),
-		//p2pCh:            make(chan *OrderCommitment, 10),
+		notifyCh:      make(chan *OrderCommitment, notifyBufferLen),
 	}
 	go tri.HandleSubscribe()
 	return tri, nil
@@ -93,6 +91,8 @@ func (m *MEVless) OrderCommitment(blockNum common.BlockNum) error {
 		BlockNumber: blockNum,
 		Sequences:   sequence,
 	}
+
+	m.notifyClient(orderCommitment)
 
 	err = m.storeOrderCommitment(orderCommitment)
 	if err != nil {
@@ -180,4 +180,11 @@ func (m *MEVless) storeOrderCommitment(oc *OrderCommitment) error {
 		}
 	}
 	return batch.Commit(pebble.Sync)
+}
+
+func (m *MEVless) notifyClient(oc *OrderCommitment) {
+	if len(m.notifyCh) == notifyBufferLen {
+		_ = <-m.notifyCh
+	}
+	m.notifyCh <- oc
 }
