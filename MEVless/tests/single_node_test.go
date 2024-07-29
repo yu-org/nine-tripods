@@ -45,12 +45,7 @@ func runChain(t *testing.T, wg *sync.WaitGroup) {
 	assert.NoError(t, err)
 
 	chain := startup.InitDefaultKernel(yuCfg, poaTri, assetTri, mevLessTri)
-	go chain.Startup()
-
-	blockInterval := time.Duration(poaCfg.BlockInterval) * time.Second
-	time.Sleep(blockInterval * 16)
-
-	chain.Stop()
+	chain.Startup()
 
 	wg.Done()
 }

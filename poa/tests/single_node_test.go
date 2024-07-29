@@ -38,12 +38,7 @@ func runChain(wg *sync.WaitGroup) {
 	poaTri := poa.NewPoa(poaCfg)
 
 	chain := startup.InitDefaultKernel(yuCfg, poaTri, assetTri)
-	go chain.Startup()
-
-	blockInterval := time.Duration(poaCfg.BlockInterval) * time.Second
-	time.Sleep(blockInterval * 16)
-
-	chain.Stop()
+	chain.Startup()
 
 	wg.Done()
 }
