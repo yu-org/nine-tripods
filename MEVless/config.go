@@ -12,6 +12,6 @@ func DefaultCfg() *Config {
 		PackNumber: 10000,
 		Addr:       "localhost:9071",
 		Charge:     1000,
-		DbPath:     "mev_less",
+		DbPath:     "yu/mev_less",
 	}
 }

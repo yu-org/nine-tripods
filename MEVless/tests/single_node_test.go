@@ -23,13 +23,13 @@ func TestMEVless(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 
-	go runChain(&wg)
+	go runChain(t, &wg)
 	time.Sleep(2 * time.Second)
 	transferAsset(t)
 	wg.Wait()
 }
 
-func runChain(wg *sync.WaitGroup) {
+func runChain(t *testing.T, wg *sync.WaitGroup) {
 
 	poaCfg := poa.DefaultCfg(0)
 	mevLessCfg := MEVless.DefaultCfg()
@@ -40,7 +40,8 @@ func runChain(wg *sync.WaitGroup) {
 
 	assetTri := asset.NewAsset("yu-coin")
 	poaTri := poa.NewPoa(poaCfg)
-	mevLessTri := MEVless.NewMEVless(mevLessCfg)
+	mevLessTri, err := MEVless.NewMEVless(mevLessCfg)
+	assert.NoError(t, err)
 
 	chain := startup.InitDefaultKernel(poaTri, assetTri, mevLessTri)
 	go chain.Startup()
