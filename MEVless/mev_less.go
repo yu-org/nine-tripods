@@ -65,6 +65,7 @@ func (m *MEVless) PackFor(blockNum common.BlockNum, numLimit uint64, filter func
 	})
 }
 
+// wrCall.params = "MEVless_(TxnHash)"
 func (m *MEVless) OrderCommitment(blockNum common.BlockNum) error {
 	hashTxns, err := m.Pool.PackFor(m.cfg.PackNumber, func(txn *types.SignedTxn) bool {
 		if txn.ParamsIsJson() {

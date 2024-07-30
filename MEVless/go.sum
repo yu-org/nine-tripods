@@ -38,3 +38,5 @@ github.com/yu-org/yu v0.0.0-20240729100016-8a5cb2743c2c h1:bUfGskSHFwqoJE1SIcfNa
 github.com/yu-org/yu v0.0.0-20240729100016-8a5cb2743c2c/go.mod h1:WBUP1KQR60y8qx5eA974Kn6X1Ckq28tbx7s36i16FI0=
 github.com/yu-org/yu v0.0.0-20240730044908-8faa4198641e h1:4g33WZtP1J4IfIGvwxOXWl4hQtPVtfMyLGkJLrIQPdY=
 github.com/yu-org/yu v0.0.0-20240730044908-8faa4198641e/go.mod h1:WBUP1KQR60y8qx5eA974Kn6X1Ckq28tbx7s36i16FI0=
+github.com/yu-org/yu v0.0.0-20240730063938-e1ea1aac763a h1:a79ZTnR42ly8U5u34c13MQglntdlRRp5HUwBeovAkZU=
+github.com/yu-org/yu v0.0.0-20240730063938-e1ea1aac763a/go.mod h1:WBUP1KQR60y8qx5eA974Kn6X1Ckq28tbx7s36i16FI0=
