@@ -2,4 +2,4 @@ module github.com/yu-org/nine-tripods/MEVless
 
 go 1.21.4
 
-require github.com/yu-org/yu v0.0.0-20240823132637-19fae386797a // indirect
+require github.com/yu-org/yu v1.0.0 // indirect
