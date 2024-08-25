@@ -11,7 +11,7 @@ import (
 	"github.com/yu-org/yu/example/client/callchain"
 
 	"github.com/yu-org/nine-tripods/MEVless"
-	"github.com/yu-org/nine-tripods/poa"
+	"github.com/yu-org/nine-tripods/consensus/poa"
 
 	"os"
 	"sync"
