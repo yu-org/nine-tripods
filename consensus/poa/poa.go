@@ -297,20 +297,20 @@ LOOP:
 		localBlock.CopyFrom(p2pBlock)
 		h.State.StartBlock(localBlock.Hash)
 		return true
-	case <-time.NewTicker(h.calulateWaitTime(localBlock)).C:
+	case <-time.NewTicker(h.calculateWaitTime(localBlock)).C:
 		return false
 	}
 }
 
-func (h *Poa) calulateWaitTime(block *types.Block) time.Duration {
-	height := int(block.Height)
-	shouldLeaderIdx := (height - 1) % len(h.validatorsList)
-	n := shouldLeaderIdx - h.nodeIdx
-	if n < 0 {
-		n = -n
-	}
+func (h *Poa) calculateWaitTime(block *types.Block) time.Duration {
+	//height := int(block.Height)
+	//shouldLeaderIdx := (height - 1) % len(h.validatorsList)
+	//n := shouldLeaderIdx - h.nodeIdx
+	//if n < 0 {
+	//	n = -n
+	//}
 
-	return time.Duration(h.blockInterval+n) * time.Second
+	return time.Duration(h.blockInterval) * time.Second
 }
 
 func (h *Poa) getCurrentHeight() common.BlockNum {
