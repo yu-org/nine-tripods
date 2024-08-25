@@ -1,4 +1,4 @@
-module github.com/yu-org/nine-tripods/poa
+module github.com/yu-org/nine-tripods/consensus/poa
 
 go 1.21.4
 

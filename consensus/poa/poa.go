@@ -165,6 +165,7 @@ func (h *Poa) StartBlock(block *types.Block) {
 	now := time.Now()
 	defer func() {
 		duration := time.Since(now)
+		// fmt.Println("-------start-block last: ", duration.String(), "block-number = ", block.Height)
 		time.Sleep(time.Duration(h.blockInterval)*time.Second - duration)
 	}()
 
@@ -234,17 +235,18 @@ func (h *Poa) StartBlock(block *types.Block) {
 func (h *Poa) EndBlock(block *types.Block) {
 	chain := h.Chain
 
+	// now := time.Now()
 	err := h.Execute(block)
 	if err != nil {
 		logrus.Panic("execute block failed: ", err)
 	}
-
 	// TODO: sync the state (execute receipt) with other nodes
 
 	err = chain.AppendBlock(block)
 	if err != nil {
 		logrus.Panic("append block failed: ", err)
 	}
+	// fmt.Println("execute block last: ", time.Since(now).String())
 
 	err = h.Pool.Reset(block.Txns)
 	if err != nil {
