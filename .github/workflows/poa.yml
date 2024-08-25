@@ -19,7 +19,7 @@ on:
 
 defaults:
   run:
-    working-directory: 'poa'
+    working-directory: 'consensus/poa'
 
 jobs:
   test:
