@@ -11,7 +11,7 @@ type PoaConfig struct {
 	// secret for generating keypair.
 	MySecret   string           `toml:"my_secret"`
 	Validators []*ValidatorConf `toml:"validators"`
-	// block out interval, seconds
+	// block out interval, millisecond
 	BlockInterval int `toml:"block_interval"`
 	// the number of packing txns from txpool, default 5000
 	PackNum uint64 `toml:"pack_num"`
@@ -34,7 +34,7 @@ func DefaultCfg(idx int) *PoaConfig {
 			{Pubkey: "", P2pIp: "12D3KooWSKPs95miv8wzj3fa5HkJ1tH7oEGumsEiD92n2MYwRtQG"},
 			{Pubkey: "", P2pIp: "12D3KooWRuwP7nXaRhZrmoFJvPPGat2xPafVmGpQpZs5zKMtwqPH"},
 		},
-		BlockInterval: 3,
+		BlockInterval: 3000,
 		PackNum:       30000,
 		PrettyLog:     true,
 	}

@@ -166,7 +166,7 @@ func (h *Poa) StartBlock(block *types.Block) {
 	defer func() {
 		duration := time.Since(now)
 		// fmt.Println("-------start-block last: ", duration.String(), "block-number = ", block.Height)
-		time.Sleep(time.Duration(h.blockInterval)*time.Second - duration)
+		time.Sleep(time.Duration(h.blockInterval)*time.Millisecond - duration)
 	}()
 
 	h.setCurrentHeight(block.Height)
@@ -310,7 +310,7 @@ func (h *Poa) calculateWaitTime(block *types.Block) time.Duration {
 	//	n = -n
 	//}
 
-	return time.Duration(h.blockInterval) * time.Second
+	return time.Duration(h.blockInterval) * time.Millisecond
 }
 
 func (h *Poa) getCurrentHeight() common.BlockNum {
