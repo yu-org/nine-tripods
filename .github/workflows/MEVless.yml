@@ -17,9 +17,9 @@ on:
       - '!**/docs/**'
       - '!**/README.md'
 
-defaults:
-  run:
-    working-directory: 'MEVless'
+#defaults:
+#  run:
+#    working-directory: 'MEVless'
 
 jobs:
   test:

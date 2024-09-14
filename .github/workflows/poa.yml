@@ -17,9 +17,9 @@ on:
       - '!**/docs/**'
       - '!**/README.md'
 
-defaults:
-  run:
-    working-directory: 'consensus/poa'
+#defaults:
+#  run:
+#    working-directory: 'consensus/poa'
 
 jobs:
   test:
