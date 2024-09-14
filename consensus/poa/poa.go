@@ -219,7 +219,7 @@ func (h *Poa) StartBlock(block *types.Block) {
 
 	block.SetTxns(txns)
 
-	h.State.StartBlock(block.Hash)
+	h.State.StartBlock(block)
 
 	blockByt, err := block.Encode()
 	if err != nil {
@@ -258,7 +258,7 @@ func (h *Poa) EndBlock(block *types.Block) {
 	//logrus.WithField("block-height", block.Height).WithField("block-hash", block.Hash.String()).
 	//	Info("append block")
 
-	h.State.FinalizeBlock(block.Hash)
+	h.State.FinalizeBlock(block)
 }
 
 func (h *Poa) FinalizeBlock(block *types.Block) {
@@ -295,7 +295,7 @@ LOOP:
 			goto LOOP
 		}
 		localBlock.CopyFrom(p2pBlock)
-		h.State.StartBlock(localBlock.Hash)
+		h.State.StartBlock(localBlock)
 		return true
 	case <-time.NewTicker(h.calculateWaitTime(localBlock)).C:
 		return false
