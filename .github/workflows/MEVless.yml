@@ -17,9 +17,9 @@ on:
       - '!**/docs/**'
       - '!**/README.md'
 
-defaults:
-  run:
-    working-directory: 'MEVless'
+#defaults:
+#  run:
+#    working-directory: 'MEVless'
 
 jobs:
   test:
@@ -34,4 +34,4 @@ jobs:
         go-version: '1.21'
 
     - name: Test Single Node
-      run: go test -v ./tests/single_node_test.go
+      run: make test_mevless
