@@ -8,12 +8,16 @@ on:
     branches: [ "main" ]
     paths:
       - 'MEVless/**'
+      - 'go.mod'
+      - 'go.sum'
       - '!**/docs/**'
       - '!**/README.md'
   pull_request:
     branches: [ "main" ]
     paths:
       - 'MEVless/**'
+      - 'go.mod'
+      - 'go.sum'
       - '!**/docs/**'
       - '!**/README.md'
 
