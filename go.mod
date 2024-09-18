@@ -9,7 +9,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.9.0
-	github.com/yu-org/yu v1.0.8
+	github.com/yu-org/yu v1.0.9
 	go.uber.org/atomic v1.11.0
 )
 
