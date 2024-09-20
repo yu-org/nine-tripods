@@ -1,6 +1,7 @@
 package poa
 
 import (
+	"github.com/BurntSushi/toml"
 	"github.com/libp2p/go-libp2p/core/peer"
 	"github.com/sirupsen/logrus"
 	. "github.com/yu-org/yu/core/keypair"
@@ -17,6 +18,15 @@ type PoaConfig struct {
 	PackNum uint64 `toml:"pack_num"`
 
 	PrettyLog bool `toml:"pretty_log"`
+}
+
+func LoadCfgFromPath(path string) *PoaConfig {
+	cfg := new(PoaConfig)
+	_, err := toml.DecodeFile(path, cfg)
+	if err != nil {
+		logrus.Fatal("load poa-config file (%s) failed: %v", path, err)
+	}
+	return cfg
 }
 
 var DefaultSecrets = []string{
