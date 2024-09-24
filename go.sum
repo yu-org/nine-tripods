@@ -815,6 +815,8 @@ github.com/wlynxg/anet v0.0.3/go.mod h1:eay5PRQr7fIVAMbTbchTnO9gG65Hg/uYGdc7mguH
 github.com/xlab/treeprint v0.0.0-20180616005107-d6fb6747feb6/go.mod h1:ce1O1j6UtZfjr22oyGxGLbauSBp2YVXpARAosm7dHBg=
 github.com/yu-org/yu v1.0.11 h1:m9/xtfnQKnh1sqNrr7tfkOaMREZ5+cSHd9RL6+83ne0=
 github.com/yu-org/yu v1.0.11/go.mod h1:BbNc5/lNJC8k2YeRBt7C1gZyzRlQn0UQ5w44H7hcdpw=
+github.com/yu-org/yu v1.0.12 h1:Nq8xlAHVAmdqZqgqixaJEFhSE9D8S8DsJMgxIywQUkY=
+github.com/yu-org/yu v1.0.12/go.mod h1:BbNc5/lNJC8k2YeRBt7C1gZyzRlQn0UQ5w44H7hcdpw=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.3.5/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
