@@ -3,18 +3,18 @@ module github.com/yu-org/nine-tripods
 go 1.23.0
 
 require (
+	github.com/BurntSushi/toml v1.2.1
 	github.com/cockroachdb/pebble v1.1.2
 	github.com/gorilla/websocket v1.5.3
 	github.com/libp2p/go-libp2p v0.36.3
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.9.3
 	github.com/stretchr/testify v1.9.0
-	github.com/yu-org/yu v1.0.12
+	github.com/yu-org/yu v1.0.13
 	go.uber.org/atomic v1.11.0
 )
 
 require (
-	github.com/BurntSushi/toml v1.2.1 // indirect
 	github.com/ChainSafe/go-schnorrkel v0.0.0-20200626160457-b38283118816 // indirect
 	github.com/DataDog/zstd v1.5.5 // indirect
 	github.com/HyperService-Consortium/go-hexutil v1.0.1 // indirect
